@@ -3,8 +3,6 @@ import hashlib
 import hmac
 import os
 import struct
-
-#import onetimepass as otp
 import random as _random
 
 import time
@@ -114,8 +112,19 @@ class token:
 
 
 def main():
-    user = token('yuval')
+    file_name = 'user.name'
+
+    if not os.path.isfile(file_name):
+        print('user.name file missing - please write user name to file.')
+        exit(-1)
+
+    with open(file_name, 'r+') as fd:
+        user_name = fd.read()
+
+    user = token(user_name)
+
     print(user.get_ssid())
     user.write_ssid()
 
-main()
+if __name__ == "__main__":
+    main()
