@@ -16,7 +16,7 @@ def index():
     for user in All_Messages.get_users():
         Ans += "<p>" + str(user) + "</p>"
         otp_window = All_Messages.get_otp_window(str(user))
-        Ans += "<p>" + str(otp_window) + "</p>"
+        Ans += "<p>" + str(otp_window) + "</p>" + ""
 
     return Ans
 
