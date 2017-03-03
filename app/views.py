@@ -1,5 +1,6 @@
 from app import app
 import onetimepass as otp
+import time
 
 @app.route('/')
 @app.route('/index')
@@ -23,15 +24,21 @@ def check_token(token):
     IntLen          = 30 #dont change
     window_bi_size  = 3
 
-    page_answer     = "aaa"
+    page_answer     = ""
 
-    accepted_tokens = [otp.get_totp(my_secret, clock=time.time()-d ) \
+    accepted_tokens = [otp.get_totp(my_secret, clock=time.time()-d, as_string=True ) \
                        for d in range(-IntLen*window_bi_size,IntLen*window_bi_size+1,IntLen)]
 
-    if (str(token)==str(my_token)):
-        return ("Winner Winner chicken dinner!!!")
+    page_answer += "\r\n"
+    page_answer += str(accepted_tokens)
+
+    if (str(token) in accepted_tokens):
+        page_answer += "\r\nWinner Winner chicken dinner!!!"
+        return page_answer
+        #return ("Winner Winner chicken dinner!!!")
     else:
-        return("given {a} calc {b}".format(a=token, b=my_token))
+        return page_answer
+        #return("given {a} calc {b}".format(a=token, b=my_token))
         #return("given: " + str(token) + "\ncalculated: " + str(my_token))
 
     #print "given %d calc %d" (token, my_token)
