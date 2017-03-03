@@ -4,6 +4,7 @@ import hmac
 import os
 import struct
 import random as _random
+import sys
 
 import time
 
@@ -16,9 +17,9 @@ class token:
     token = None
     user = None
 
-    IntLen = 3  # dont change
+    IntLen = 30  # dont change
 
-    pattern = "{t}.{u}.bubbles.com"
+    pattern = "{t}.{u}.bubbles.one"
     def __init__(self,user):
 
         self.user = user
@@ -111,15 +112,14 @@ class token:
         )
 
 
-def main():
+def main(argv):
     file_name = 'user.name'
 
-    if not os.path.isfile(file_name):
-        print('user.name file missing - please write user name to file.')
+    if len(argv) != 2:
+        print('usage -  run_ssid.py <user_name>')
         exit(-1)
 
-    with open(file_name, 'r+') as fd:
-        user_name = fd.read()
+    user_name = argv[1]
 
     user = token(user_name)
 
@@ -127,4 +127,4 @@ def main():
     user.write_ssid()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv)
