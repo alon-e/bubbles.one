@@ -8,7 +8,7 @@ def index():
     return "Hello, World!"
 
 @app.route('/user/<string:username>')
-def show_user_profile(username):
+def show_user_alon(username):
     # show the user profile for that user
     if username.lower()=="alon" :
         return("Winner!!!")
