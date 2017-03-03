@@ -4,10 +4,10 @@ import time
 import Messages
 
 All_Messages = Messages.Messages()
-All_Messages.add_user('alon' , 'UGPQCD3EQHRJEZMG')
-All_Messages.add_user('yuval', 'YK3RVQE5H4W5XIZ4')
+All_Messages.add_user('alon' , 'UGPQCD3EQHRJEZMG', 'nola')
+All_Messages.add_user('yuval', 'YK3RVQE5H4W5XIZ4', 'y23')
 
-my_secret = "UGPQCD3EQHRJEZMG"
+#my_secret = "UGPQCD3EQHRJEZMG"
 
 @app.route('/')
 @app.route('/index')
@@ -16,7 +16,7 @@ def index():
     for user in All_Messages.get_users():
         Ans += "<p>" + str(user) + "</p>"
         otp_window = All_Messages.get_otp_window(str(user))
-        Ans += "<p>" + str(otp_window) + "</p>" + ""
+        Ans += "<p>" + str(otp_window) + "</p>"
 
     return Ans
 
@@ -27,12 +27,14 @@ def ReadMyMessages(user_name, password):
     my_mess = All_Messages.get_messages(str(user_name), str(password))
     if (my_mess==All_Messages.WrongPassword):
         return my_mess #print wrong password
-    for m in my_mess:
-        Ans += "<p>" + str(m) + "</p>"
-    return Ans
+    else:
+        Ans += "<p>" + "Hello {u}, You have {nom} messages:".format(u=str(user_name), nom=len(my_mess)) + "</p>"
+        for m in my_mess:
+            Ans += "<p>" + str(m) + "</p>"
+        return Ans
 
-@app.route('/publish/<string:gotten_token>/<string:user_name>/<string:message>')
-def Publish(gotten_token, user_name , message):
+@app.route('/publish/<string:user_name>/<string:gotten_token>/<string:message>')
+def Publish(user_name, gotten_token, message):
     assert(str(user_name) in All_Messages.get_users())
     time_on_server = time.time()
     otp_window = All_Messages.get_otp_window(str(user_name))
@@ -40,8 +42,10 @@ def Publish(gotten_token, user_name , message):
         All_Messages.add_message(str(user_name), str(message), str(gotten_token), time_on_server)
         return "Accepted!!"
     else:
+        return "<p>" + "Rejected! user_name\\token not valid!" + "</p>"
         return "Rejected! token {a} not in window {b}".format(a=str(gotten_token), b=str(otp_window))
 
+'''
 @app.route('/user/<string:username>')
 def show_user_alon(username):
     # show the user profile for that user
@@ -51,7 +55,7 @@ def show_user_alon(username):
     else:
         return ('User ' + username + ", come back when your alon")
 
-'''
+
 @app.route('/token/<string:token>')
 def check_token(token):
     my_token = otp.get_totp(my_secret)

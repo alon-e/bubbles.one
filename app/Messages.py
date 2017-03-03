@@ -6,12 +6,14 @@ class Messages:
         self.ByUsers       = {}  # user(string) -- Messages(list)
         self.PrivateKeys   = {}  # user(string) -- PrivateKey(string)
         self.Passwords     = {}  # user(string) -- Password(string)
+
         self.WrongPassword = "WRONG PASSWORD"
 
-    def add_user(self, user_name, private_key): #adding existing user will delete all messages
+    def add_user(self, user_name, private_key, password): #adding existing user will delete all messages
         assert(len(str(user_name))<12)          #Convention
         self.ByUsers[str(user_name)]     = []
         self.PrivateKeys[str(user_name)] = str(private_key)
+        self.Passwords[str(user_name)]   = str(password)
 
     def add_message(self, user_name, text, token, time): #Add Publisher user_name
         assert(self.ByUsers.has_key(str(user_name)))
