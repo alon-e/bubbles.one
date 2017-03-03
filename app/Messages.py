@@ -3,9 +3,10 @@ import time
 
 class Messages:
     def __init__(self):
-        self.ByUsers      = {}  # user(string) -- Messages(list)
-        self.PrivateKeys  = {}  # user(string) -- PrivateKey(string)
-        self.Passwords    = {}  # user(string) -- Password(string)
+        self.ByUsers       = {}  # user(string) -- Messages(list)
+        self.PrivateKeys   = {}  # user(string) -- PrivateKey(string)
+        self.Passwords     = {}  # user(string) -- Password(string)
+        self.WrongPassword = "WRONG PASSWORD"
 
     def add_user(self, user_name, private_key): #adding existing user will delete all messages
         assert(len(str(user_name))<12)          #Convention
@@ -27,8 +28,8 @@ class Messages:
         if self.Passwords[str(user_name)]==str(password):
             return self.ByUsers[str(user_name)]
         else:
-            return "WRONG PASSWORD"
-`
+            return self.WrongPassword
+
     def get_users(self):
         return self.ByUsers.keys()
 

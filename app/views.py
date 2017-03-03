@@ -20,11 +20,13 @@ def index():
 
     return Ans
 
-@app.route('/read/<string:user_name>/<string:next_token>')
-def ReadMyMessages(user_name, next_token):
+@app.route('/read/<string:user_name>/<string:password>')
+def ReadMyMessages(user_name, password):
     assert (str(user_name) in All_Messages.get_users())
     Ans = ""
-    my_mess = All_Messages.get_messages(str(user_name))
+    my_mess = All_Messages.get_messages(str(user_name), str(password))
+    if (my_mess==All_Messages.WrongPassword):
+        return my_mess #print wrong password
     for m in my_mess:
         Ans += "<p>" + str(m) + "</p>"
     return Ans
