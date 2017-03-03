@@ -20,19 +20,25 @@ def index():
 
     return Ans
 
-@app.route('/Read/<string:user_name>/<string:next_token>')
+@app.route('/read/<string:user_name>/<string:next_token>')
 def ReadMyMessages(user_name, next_token):
-    pass
+    assert (str(user_name) in All_Messages.get_users())
+    Ans = ""
+    my_mess = All_Messages.get_messages(str(user_name))
+    for m in my_mess:
+        Ans += "<p>" + str(m) + "</p>"
+    return Ans
 
-@app.route('/Publish/<string:gotten_token>/<string:user_name>/<string:message>')
+@app.route('/publish/<string:gotten_token>/<string:user_name>/<string:message>')
 def Publish(gotten_token, user_name , message):
     assert(str(user_name) in All_Messages.get_users())
     time_on_server = time.time()
     otp_window = All_Messages.get_otp_window(str(user_name))
     if str(gotten_token) in otp_window:
         All_Messages.add_message(str(user_name), str(message), str(gotten_token), time_on_server)
+        return "Accepted!!"
     else:
-        return "Rejected! token %s not in window %s" (str(gotten_token), str(otp_window))
+        return "Rejected! token {a} not in window {b}".format(a=str(gotten_token), b=str(otp_window))
 
 @app.route('/user/<string:username>')
 def show_user_alon(username):
