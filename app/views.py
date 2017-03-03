@@ -12,10 +12,13 @@ my_secret = "UGPQCD3EQHRJEZMG"
 @app.route('/')
 @app.route('/index')
 def index():
+    Ans = ""
     for user in All_Messages.get_users():
-        print str(user)
+        Ans += "<p>" + str(user) + "</p>"
         otp_window = All_Messages.get_otp_window(str(user))
-        print str(otp_window)
+        Ans += "<p>" + str(otp_window) + "</p>"
+
+    return Ans
 
 @app.route('/Read/<string:user_name>/<string:next_token>')
 def ReadMyMessages(user_name, next_token):
@@ -40,6 +43,7 @@ def show_user_alon(username):
     else:
         return ('User ' + username + ", come back when your alon")
 
+'''
 @app.route('/token/<string:token>')
 def check_token(token):
     my_token = otp.get_totp(my_secret)
@@ -65,3 +69,4 @@ def check_token(token):
         #return("given: " + str(token) + "\ncalculated: " + str(my_token))
 
     #print "given %d calc %d" (token, my_token)
+'''
