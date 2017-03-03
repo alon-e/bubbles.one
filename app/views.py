@@ -16,15 +16,17 @@ def index():
     for user in All_Messages.get_users():
         Ans += "<p>" + str(user) + "</p>"
         otp_window = All_Messages.get_otp_window(str(user))
-        Ans += "<p>" + str(otp_window) + "</p>"
+        Ans += "<p>" + str(otp_window) + "</p>" + ""
 
     return Ans
 
-@app.route('/read/<string:user_name>/<string:next_token>')
-def ReadMyMessages(user_name, next_token):
+@app.route('/read/<string:user_name>/<string:password>')
+def ReadMyMessages(user_name, password):
     assert (str(user_name) in All_Messages.get_users())
     Ans = ""
-    my_mess = All_Messages.get_messages(str(user_name))
+    my_mess = All_Messages.get_messages(str(user_name), str(password))
+    if (my_mess==All_Messages.WrongPassword):
+        return my_mess #print wrong password
     for m in my_mess:
         Ans += "<p>" + str(m) + "</p>"
     return Ans
