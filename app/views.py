@@ -67,6 +67,18 @@ def send_form():
 @app.route('/')
 @app.route('/index')
 def index():
+    return "Hello and welcome to bubble.one server (Hackaton demonstration)"
+
+@app.route('/help')
+def help_page():
+    Ans  = ""
+    Ans += "<p>" + "Hello and welcome to bubble.one server (Hackaton demonstration)" + "</p>"
+    Ans += "<p>" + "You can use: tick, read/user/pass, read_all, publish/user/token/message " + "</p>"
+    Ans += "<p>" + "You can also try: send, get " + "</p>"
+    return Ans
+
+@app.route('/tick')
+def tick():
     Ans = ""
     for user in All_Messages.get_users():
         Ans += "<p>" + str(user) + "</p>"
@@ -85,8 +97,14 @@ def ReadAllUserMessages():
 
 @app.route('/read/<string:user_name>/<string:password>')
 def ReadMyMessages(user_name, password):
-    assert (str(user_name) in All_Messages.get_users())
-    Ans = ""
+    Ans   = ""
+    Wrong = "Sorry, wrong username\password"
+
+    if not(str(user_name) in All_Messages.get_users()):
+        return Wrong
+    if (str(All_Messages.Passwords[str(user_name)]) != str(password)):
+        return Wrong
+
     my_mess = All_Messages.get_messages(str(user_name), str(password))
     if (my_mess==All_Messages.WrongPassword):
         return my_mess #print wrong password
