@@ -38,8 +38,9 @@ class Messages:
     def get_otp_window(self, user_name):
         assert(self.ByUsers.has_key(str(user_name)))
         IntLen = 15         # don't change
-        window_bi_size = 6  # should be configurable later
-        otp_window = [otp.get_totp(self.PrivateKeys[str(user_name)], clock=time.time() - d, as_string=True, \
+        window_bi_size = 10  # should be configurable later
+        back_in_time = 0 #(36/60)*(60*60) #patch!! in secs
+        otp_window = [otp.get_totp(self.PrivateKeys[str(user_name)], clock=(time.time() - back_in_time - d), as_string=True, \
          interval_length=IntLen) for d in range(-IntLen * window_bi_size, IntLen * window_bi_size + 1, IntLen)]
 
         return otp_window

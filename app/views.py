@@ -15,6 +15,13 @@ net_names = []
 
 #my_secret = "UGPQCD3EQHRJEZMG"
 
+def put_some_messages():
+    All_Messages.add_message('yuval', 'Bitcoin Embassy offering great deals!!', '982316', 1488621423.52)
+    All_Messages.add_message('yuval', 'Bar Yehudai is selling weed now on the Lilienblum st.', '227763', 1488625585.78)
+    All_Messages.add_message('yuval', 'Prezzo coin is at all time high!', '076108', 1488627893.49)
+
+put_some_messages()        #toggle if you want
+
 @app.route('/get/<string:net_list>', methods=['GET', 'POST'])
 def get_form(net_list):
     global net_names
