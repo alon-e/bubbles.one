@@ -133,12 +133,14 @@ def ReadMyMessages(user_name, password):
         return my_mess #print wrong password
     else:
         Ans += "<p>" + "Hello {u}, You have {NoM} messages:".format(u=str(user_name), NoM=len(my_mess)) + "</p>"
+        Ans += "<p> ___________ </p>"
         i=0
         for m in my_mess:
             text = str(m['text'])
             if (i<=4):
-                Ans += "<p>" + "From: " + str(from_list[i]) + "</p>"
-            Ans += "<p>" + "Message: " + text + "</p>"
+                Ans += "<p>" + "<b>From:</b> " + str(from_list[i]) + "</p>"
+            Ans += "<p>" + "<b>Message:</b> " + text + "</p>"
+            Ans += "<p> ___________ </p>"
             i   += 1
         return Ans
 
