@@ -10,10 +10,10 @@ All_Messages.add_user('alon' , 'RPPYE6LOX57FEJIS', 'nola')
 All_Messages.add_user('yuval', 'SPC4ABXI23HDGSZQ', 'y23')
 All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'bar')
 
+myIP      = "http://192.168.1.109:8080"
+net_names = []
 
 #my_secret = "UGPQCD3EQHRJEZMG"
-
-net_names = []
 
 @app.route('/get/<string:net_list>', methods=['GET', 'POST'])
 def get_form(net_list):
@@ -77,6 +77,19 @@ def help_page():
     Ans += "<p>" + "You can also try: send, get " + "</p>"
     return Ans
 
+def href(url, text):
+    link = "<a href={u}>{t}</a>".format(u=url, t=text)
+    return link
+
+@app.route('/demo_pc')
+def demo_pc():
+    Ans  = ""
+    Ans += "<p>" + "Hello and welcome to bubble.one demo for pc browser (Hackaton demonstration)" + "</p>"
+    Ans += "<p>" + "Click here, to " + href(myIP+"/read_all" ,"Read all messages") + " , should be all empty" + "</p>"
+    Ans += "<p>" + "Click here, to see " + href(myIP+"/tick" ,"a Window of tokens") +  "</p>"
+    #Ans += "<p>" + "You can also try: send, get " + "</p>"
+    return Ans
+
 @app.route('/tick')
 def tick():
     Ans = ""
@@ -98,7 +111,7 @@ def ReadAllUserMessages():
 @app.route('/read/<string:user_name>/<string:password>')
 def ReadMyMessages(user_name, password):
     Ans   = ""
-    Wrong = "Sorry, wrong username\password"
+    Wrong = "Sorry, wrong username/password"
 
     if not(str(user_name) in All_Messages.get_users()):
         return Wrong

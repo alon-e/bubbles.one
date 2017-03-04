@@ -39,7 +39,7 @@ class Messages:
         assert(self.ByUsers.has_key(str(user_name)))
         IntLen = 15         # don't change
         window_bi_size = 6  # should be configurable later
-        otp_window = [otp.get_totp(self.PrivateKeys[str(user_name)], clock=time.time() - d, as_string=True) \
-         for d in range(-IntLen * window_bi_size, IntLen * window_bi_size + 1, IntLen)]
+        otp_window = [otp.get_totp(self.PrivateKeys[str(user_name)], clock=time.time() - d, as_string=True, \
+         interval_length=IntLen) for d in range(-IntLen * window_bi_size, IntLen * window_bi_size + 1, IntLen)]
 
         return otp_window
