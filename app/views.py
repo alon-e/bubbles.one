@@ -2,12 +2,60 @@ from app import app
 import onetimepass as otp
 import time
 import Messages
+import HTMLer
+from flask import request
 
 All_Messages = Messages.Messages()
-All_Messages.add_user('alon' , 'UGPQCD3EQHRJEZMG', 'nola')
-All_Messages.add_user('yuval', 'YK3RVQE5H4W5XIZ4', 'y23')
+All_Messages.add_user('alon' , 'RPPYE6LOX57FEJIS', 'nola')
+All_Messages.add_user('yuval', 'SPC4ABXI23HDGSZQ', 'y23')
+All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'bar')
+
 
 #my_secret = "UGPQCD3EQHRJEZMG"
+
+net_names = []
+
+@app.route('/get/<string:net_list>', methods=['GET', 'POST'])
+def ret_php(net_list):
+    global net_names
+    if request.method == 'GET':
+        ns = str(net_list)
+        nl = ns.split(';')
+        net_names = nl
+        return HTMLer.getSendMessPHP(nl)
+    elif request.method == 'POST':
+        pass
+        #return "321312"
+    else:
+        pass
+
+@app.route('/send', methods=['GET', 'POST'])
+def send_php():
+    global net_names
+    #print "here"
+    if request.method == 'POST':
+        mtext   = str(request.form['mtext'])
+        print "here1"
+        i=0
+        ch_list=[]
+        print str(net_names)
+        for nn in net_names:
+            #print nn
+            try:
+                ch = str(request.form['cb_list'+str(i)]) #Eq 1 if chbox checked, excepts on unchecked
+            except:
+                ch = "NO"
+
+            #print ch
+            if (ch!="NO"):
+                ch_list += [nn]
+
+            i += 1
+
+        return str(ch_list) #str(ch_list)
+
+    #return str(info)
+
 
 @app.route('/')
 @app.route('/index')
