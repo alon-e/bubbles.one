@@ -16,7 +16,7 @@ All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'bar')
 net_names = []
 
 @app.route('/get/<string:net_list>', methods=['GET', 'POST'])
-def ret_php(net_list):
+def get_form(net_list):
     global net_names
     if request.method == 'GET':
         ns = str(net_list)
@@ -30,7 +30,7 @@ def ret_php(net_list):
         pass
 
 @app.route('/send', methods=['GET', 'POST'])
-def send_php():
+def send_form():
     global net_names
     #print "here"
     if request.method == 'POST':
@@ -52,7 +52,14 @@ def send_php():
 
             i += 1
 
-        return str(ch_list) #str(ch_list)
+        for c in ch_list:
+            cs = c.split(".")
+            assert(len(cs) == 2)  #token.user -- maybe token.user.bubble.one
+            (token,user) = c.split(".")
+            ans = Publish(user, token, mtext)
+            print ans
+
+        return "going to send: '" + mtext + "' to:" + str(ch_list)
 
     #return str(info)
 
@@ -68,6 +75,14 @@ def index():
 
     return Ans
 
+@app.route('/read_all')
+def ReadAllUserMessages():
+    ans = ""
+    for u in All_Messages.get_users():
+        ans +=  ReadMyMessages(u,All_Messages.Passwords[u])
+
+    return ans
+
 @app.route('/read/<string:user_name>/<string:password>')
 def ReadMyMessages(user_name, password):
     assert (str(user_name) in All_Messages.get_users())
@@ -76,7 +91,7 @@ def ReadMyMessages(user_name, password):
     if (my_mess==All_Messages.WrongPassword):
         return my_mess #print wrong password
     else:
-        Ans += "<p>" + "Hello {u}, You have {nom} messages:".format(u=str(user_name), nom=len(my_mess)) + "</p>"
+        Ans += "<p>" + "Hello {u}, You have {NoM} messages:".format(u=str(user_name), NoM=len(my_mess)) + "</p>"
         for m in my_mess:
             Ans += "<p>" + str(m) + "</p>"
         return Ans
@@ -91,7 +106,7 @@ def Publish(user_name, gotten_token, message):
         return "Accepted!!"
     else:
         return "<p>" + "Rejected! user_name\\token not valid!" + "</p>"
-        return "Rejected! token {a} not in window {b}".format(a=str(gotten_token), b=str(otp_window))
+        #return "Rejected! token {a} not in window {b}".format(a=str(gotten_token), b=str(otp_window))
 
 '''
 @app.route('/user/<string:username>')
