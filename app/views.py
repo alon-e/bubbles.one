@@ -8,7 +8,7 @@ from flask import request
 All_Messages = Messages.Messages()
 All_Messages.add_user('alon' , 'RPPYE6LOX57FEJIS', 'nola')
 All_Messages.add_user('yuval', 'SPC4ABXI23HDGSZQ', 'y23')
-All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'bar')
+All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'pass')
 
 myIP      = "http://192.168.1.109:8080"
 net_names = []
