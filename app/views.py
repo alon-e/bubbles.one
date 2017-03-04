@@ -6,11 +6,12 @@ import HTMLer
 from flask import request
 
 All_Messages = Messages.Messages()
-All_Messages.add_user('alon' , 'RPPYE6LOX57FEJIS', 'nola')
-All_Messages.add_user('yuval', 'SPC4ABXI23HDGSZQ', 'y23')
-All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'pass')
+All_Messages.add_user('alon' , 'RPPYE6LOX57FEJIS', '1')
+All_Messages.add_user('yuval', 'SPC4ABXI23HDGSZQ', '1')
+All_Messages.add_user('bar'  , 'GTB4ROKLLILVZJFJ', '1')
+#All_Messages.add_user('bar'  , 'TKYQVOG4I2ZHIGP2', 'pass')
 
-myIP      = "http://192.168.1.109:8080"
+myIP      = "http://192.168.1.197:8080"
 net_names = []
 
 #my_secret = "UGPQCD3EQHRJEZMG"
@@ -125,13 +126,20 @@ def ReadMyMessages(user_name, password):
     if (str(All_Messages.Passwords[str(user_name)]) != str(password)):
         return Wrong
 
+    from_list = ["Bitcoin Embassy", "Local Dealer", "Prezzo", "New Advertiser", "More Advertiser"]
+
     my_mess = All_Messages.get_messages(str(user_name), str(password))
     if (my_mess==All_Messages.WrongPassword):
         return my_mess #print wrong password
     else:
         Ans += "<p>" + "Hello {u}, You have {NoM} messages:".format(u=str(user_name), NoM=len(my_mess)) + "</p>"
+        i=0
         for m in my_mess:
-            Ans += "<p>" + str(m) + "</p>"
+            text = str(m['text'])
+            if (i<=4):
+                Ans += "<p>" + "From: " + str(from_list[i]) + "</p>"
+            Ans += "<p>" + "Message: " + text + "</p>"
+            i   += 1
         return Ans
 
 @app.route('/publish/<string:user_name>/<string:gotten_token>/<string:message>')
